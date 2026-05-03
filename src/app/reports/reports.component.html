@@ -1,19 +1,73 @@
 <div class="page-header">
-  <h2>Report Lab</h2>
-  <p>Generate match analytics and social content</p>
+  <h2>Match Report Lab</h2>
+  <p>Generate analytics and social content from mapped data</p>
 </div>
 
-<div class="reports-container">
-  <div class="card import-card">
-    <h3>Import Match Data</h3>
-    <p>Upload CSV files from the Mapper tool</p>
-    <button class="btn-primary">Choose CSV</button>
+<div class="reports-grid">
+  <!-- Charts Section -->
+  <div class="card chart-card">
+    <div class="card-header">
+      <h3>Event Distribution</h3>
+      <button class="btn-text" (click)="importDemoData()">Load Demo Data</button>
+    </div>
+    <div class="chart-container">
+      <div echarts [options]="chartOption()" class="demo-chart"></div>
+    </div>
   </div>
 
-  <div class="card stats-card">
-    <h3>Team Insights</h3>
-    <div class="empty-state">
-      <span>No data imported yet</span>
+  <!-- Social Queue -->
+  <div class="card social-card">
+    <h3>Social Media Queue</h3>
+    <div class="post-list" *ngIf="socialPosts().length > 0; else emptyPosts">
+      <div class="post-item" *ngFor="let post of socialPosts()">
+        <div class="post-header">
+          <span class="platform">{{ post.platform }}</span>
+          <span class="material-icons">{{ post.icon }}</span>
+        </div>
+        <p class="post-content">{{ post.content }}</p>
+        <button class="btn-sm">Copy Draft</button>
+      </div>
+    </div>
+    <ng-template #emptyPosts>
+      <div class="empty-state">
+        <span class="material-icons">info</span>
+        <p>Map some events to generate social drafts.</p>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- Detailed Table -->
+  <div class="card table-card">
+    <div class="card-header">
+      <h3>Recent Mapped Events</h3>
+      <span class="badge">{{ eventsCount() }} Total</span>
+    </div>
+    <div class="table-wrap">
+      <table *ngIf="events().length > 0; else emptyTable">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Player</th>
+            <th>Team</th>
+            <th>Action</th>
+            <th>Outcome</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let event of events().slice().reverse()">
+            <td>{{ event.minute }}'{{ event.second }}</td>
+            <td>{{ event.playerName }}</td>
+            <td><span class="team-dot" [class.home]="event.team === 'home'"></span> {{ event.team === 'home' ? homeTeam() : awayTeam() }}</td>
+            <td>{{ event.type }}</td>
+            <td><span class="status" [class.success]="event.outcome === 'Successful'">{{ event.outcome }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <ng-template #emptyTable>
+        <div class="empty-state">
+          <p>No events mapped yet for this match.</p>
+        </div>
+      </ng-template>
     </div>
   </div>
 </div>
