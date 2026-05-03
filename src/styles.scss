@@ -1,53 +1,45 @@
 :root {
-  /* Core Colors */
-  --color-bg: #030712;
-  --color-surface: rgba(15, 23, 42, 0.6);
-  --color-surface-2: rgba(30, 41, 59, 0.4);
-  --color-surface-bright: rgba(255, 255, 255, 0.03);
+  /* Modern Stealth Palette */
+  --color-bg: #020617;
+  --color-surface: #0f172a;
+  --color-surface-2: #1e293b;
+  --color-primary: #10b981;
+  --color-accent: #f59e0b;
+  --color-success: #10b981;
+  --color-danger: #ef4444;
   
-  /* Primary Neon Palette */
-  --color-primary: #00ff9d;
-  --color-primary-glow: rgba(0, 255, 157, 0.2);
-  --color-secondary: #00d1ff;
-  --color-accent: #bd00ff;
-  
-  /* Text */
+  /* Typography & Layout */
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
-  --text-dim: #64748b;
+  --border-line: #334155;
+  --radius-md: 10px;
+  --radius-lg: 14px;
   
-  /* Borders & Blurs */
-  --border-glass: rgba(255, 255, 255, 0.08);
-  --border-active: rgba(0, 255, 157, 0.4);
-  --glass-blur: blur(20px);
-  
-  /* Shadows & Effects */
-  --shadow-elite: 0 20px 50px rgba(0, 0, 0, 0.5);
-  --shadow-neon: 0 0 20px rgba(0, 255, 157, 0.15);
-  --radius-xl: 24px;
-  --radius-lg: 16px;
+  /* Subtle Shadows */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: 'Inter', sans-serif;
-  background: radial-gradient(circle at 50% 50%, #0f172a 0%, #030712 100%);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--color-bg);
   color: var(--text-main);
   color-scheme: dark;
   -webkit-font-smoothing: antialiased;
-  overflow: hidden;
 }
 
 * {
   box-sizing: border-box;
 }
 
-/* Custom Scrollbar */
+/* Minimalist Scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -55,23 +47,10 @@ html, body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-glass);
+  background: var(--border-line);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-primary);
-}
-
-/* Utility Animations */
-@keyframes tech-pulse {
-  0% { opacity: 0.8; transform: scale(0.98); }
-  50% { opacity: 1; transform: scale(1); }
-  100% { opacity: 0.8; transform: scale(0.98); }
-}
-
-@keyframes border-flow {
-  0% { border-color: var(--border-glass); }
-  50% { border-color: var(--color-primary); }
-  100% { border-color: var(--border-glass); }
 }
