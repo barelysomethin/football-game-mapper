@@ -1,19 +1,75 @@
 <div class="page-header">
   <h2>Console Dashboard</h2>
-  <p>Overview of matches and team status</p>
+  <p>Overview of {{ matchInfo().homeTeam }} vs {{ matchInfo().awayTeam }}</p>
 </div>
 
 <div class="dashboard-grid">
-  <div class="card stat-card">
-    <span class="label">Total Matches</span>
-    <span class="value">14</span>
+  <!-- Key Stats Row -->
+  <div class="card stat-card primary">
+    <div class="stat-info">
+      <span class="label">Total Events Mapped</span>
+      <span class="value">{{ eventsCount() }}</span>
+    </div>
+    <div class="stat-icon">
+      <span class="material-icons">analytics</span>
+    </div>
   </div>
+
   <div class="card stat-card">
-    <span class="label">Active Players</span>
-    <span class="value">28</span>
+    <div class="stat-info">
+      <span class="label">Home Players</span>
+      <span class="value">{{ homeRoster().length }}</span>
+    </div>
+    <div class="stat-icon secondary">
+      <span class="material-icons">groups</span>
+    </div>
   </div>
+
   <div class="card stat-card">
-    <span class="label">Mapped Events</span>
-    <span class="value">1,240</span>
+    <div class="stat-info">
+      <span class="label">Away Players</span>
+      <span class="value">{{ awayRoster().length }}</span>
+    </div>
+    <div class="stat-icon secondary">
+      <span class="material-icons">groups</span>
+    </div>
+  </div>
+
+  <!-- Match Info Section -->
+  <div class="card match-info-card">
+    <div class="card-header">
+      <h3>Match Details</h3>
+      <button class="btn-text">Edit Details</button>
+    </div>
+    
+    <div class="info-list">
+      <div class="info-item">
+        <span class="item-label">Match ID</span>
+        <span class="item-value">{{ matchInfo().id }}</span>
+      </div>
+      <div class="info-item">
+        <span class="item-label">Date</span>
+        <span class="item-value">{{ matchInfo().date }}</span>
+      </div>
+      <div class="info-item">
+        <span class="item-label">Status</span>
+        <span class="item-value status-badge">In Progress</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="card actions-card">
+    <h3>Quick Actions</h3>
+    <div class="actions-grid">
+      <a routerLink="/mapper" class="action-btn">
+        <span class="material-icons">videocam</span>
+        <span>Open AI Mapper</span>
+      </a>
+      <a routerLink="/reports" class="action-btn">
+        <span class="material-icons">description</span>
+        <span>Generate Reports</span>
+      </a>
+    </div>
   </div>
 </div>
