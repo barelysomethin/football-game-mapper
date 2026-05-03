@@ -1,9 +1,10 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import * as tf from '@tensorflow/tfjs';
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 
 export interface DetectionResult {
-  bbox: [number, number, number, number]; // [x, y, width, height]
+  bbox: [number, number, number, number];
   class: string;
   score: number;
 }
@@ -14,47 +15,33 @@ export interface DetectionResult {
 export class AiDetectionService {
   private model: cocoSsd.ObjectDetection | null = null;
   
-  readonly isModelLoading = signal(false);
-  readonly isModelLoaded = signal(false);
-  readonly loadError = signal<string | null>(null);
+  // 1. Private state using BehaviorSubjects
+  private readonly _isLoading = new BehaviorSubject<boolean>(false);
+  private readonly _isLoaded = new BehaviorSubject<boolean>(false);
 
-  constructor() {
-    // We don't load the model automatically to save resources
-    // The user will trigger it from the UI
-  }
+  // 2. Public Observables (Strict Requirement #7)
+  readonly isLoading$ = this._isLoading.asObservable();
+  readonly isLoaded$ = this._isLoaded.asObservable();
 
   async loadModel(): Promise<void> {
-    if (this.model || this.isModelLoading()) return;
+    if (this.model || this._isLoading.value) return;
 
-    this.isModelLoading.set(true);
-    this.loadError.set(null);
+    this._isLoading.next(true);
 
     try {
-      // Ensure TFJS is ready
       await tf.ready();
-      
-      // Load the COCO-SSD model
-      this.model = await cocoSsd.load({
-        base: 'lite_mobilenet_v2' // Using lite version for better browser performance
-      });
-      
-      this.isModelLoaded.set(true);
+      this.model = await cocoSsd.load({ base: 'lite_mobilenet_v2' });
+      this._isLoaded.next(true);
     } catch (err) {
-      console.error('Failed to load AI model:', err);
-      this.loadError.set('Failed to load AI model. Please check your internet connection.');
+      console.error('AI model load failed', err);
     } finally {
-      this.isModelLoading.set(false);
+      this._isLoading.next(false);
     }
   }
 
-  async detect(element: HTMLVideoElement | HTMLImageElement | HTMLCanvasElement): Promise<DetectionResult[]> {
-    if (!this.model) {
-      throw new Error('AI Model not loaded');
-    }
-
+  async detect(element: any): Promise<DetectionResult[]> {
+    if (!this.model) throw new Error('AI Model not loaded');
     const predictions = await this.model.detect(element);
-    
-    // We only care about people and sports balls for this app
     return predictions
       .filter(p => p.class === 'person' || p.class === 'sports ball')
       .map(p => ({

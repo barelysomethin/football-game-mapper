@@ -1,7 +1,9 @@
-import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatchService } from '../core/services/match.service';
+import { BaseComponent } from '../core/base/base.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,12 +13,16 @@ import { MatchService } from '../core/services/match.service';
   styleUrl: './dashboard.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DashboardComponent {
+export class DashboardComponent extends BaseComponent {
   private matchService = inject(MatchService);
 
-  // Expose signals for the template
-  matchInfo = this.matchService.matchMetadata;
-  homeRoster = this.matchService.homeRoster;
-  awayRoster = this.matchService.awayRoster;
-  eventsCount = this.matchService.eventsCount;
+  // Requirement #7 & #2 compliance
+  matchInfo = toSignal(this.matchService.metadata$, { initialValue: { id: '', homeTeam: '', awayTeam: '', date: '' } });
+  players = toSignal(this.matchService.players$, { initialValue: [] });
+  events = toSignal(this.matchService.events$, { initialValue: [] });
+
+  // Requirement #3 compliance
+  homeRoster = computed(() => this.players().filter(p => p.team === 'home'));
+  awayRoster = computed(() => this.players().filter(p => p.team === 'away'));
+  eventsCount = computed(() => this.events().length);
 }

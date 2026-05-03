@@ -1,77 +1,46 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { Player, MatchEvent, MatchMetadata } from '../models/match.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MatchService {
-  // Current Match State
-  readonly matchMetadata = signal<MatchMetadata>({
+  // 1. Private state using BehaviorSubjects
+  private readonly _metadata = new BehaviorSubject<MatchMetadata>({
     id: 'M-2026-014',
     homeTeam: 'Team A',
     awayTeam: 'Team B',
-    date: new Date().toISOString()
+    date: new Date().toLocaleDateString()
   });
 
-  readonly players = signal<Player[]>([]);
-  readonly events = signal<MatchEvent[]>([]);
+  private readonly _players = new BehaviorSubject<Player[]>([]);
+  private readonly _events = new BehaviorSubject<MatchEvent[]>([]);
 
-  // Derived State (Computed)
-  readonly homePlayers = computed(() => 
-    this.players().filter(p => p.team === 'home')
-  );
+  // 2. Public Observables (Strict Requirement #7)
+  readonly metadata$ = this._metadata.asObservable();
+  readonly players$ = this._players.asObservable();
+  readonly events$ = this._events.asObservable();
 
-  readonly awayPlayers = computed(() => 
-    this.players().filter(p => p.team === 'away')
-  );
-
-  readonly totalEvents = computed(() => this.events().length);
-
-  readonly homeEventsCount = computed(() => 
-    this.events().filter(e => e.team === 'home').length
-  );
-
-  readonly awayEventsCount = computed(() => 
-    this.events().filter(e => e.team === 'away').length
-  );
-
-  // Actions
+  // 3. Actions
   addPlayer(player: Player): void {
-    this.players.update(current => [...current, player]);
-  }
-
-  updatePlayer(updatedPlayer: Player): void {
-    this.players.update(current => 
-      current.map(p => p.id === updatedPlayer.id ? updatedPlayer : p)
-    );
-  }
-
-  removePlayer(playerId: string): void {
-    this.players.update(current => 
-      current.filter(p => p.id !== playerId)
-    );
+    this._players.next([...this._players.value, player]);
   }
 
   addEvent(event: MatchEvent): void {
-    this.events.update(current => [...current, event]);
-  }
-
-  removeEvent(eventId: string): void {
-    this.events.update(current => 
-      current.filter(e => e.id !== eventId)
-    );
+    this._events.next([...this._events.value, event]);
   }
 
   setTeams(homeName: string, awayName: string): void {
-    this.matchMetadata.update(current => ({
-      ...current,
+    this._metadata.next({
+      ...this._metadata.value,
       homeTeam: homeName,
       awayTeam: awayName
-    }));
+    });
   }
 
-  clearAllData(): void {
-    this.players.set([]);
-    this.events.set([]);
+  clearData(): void {
+    this._players.next([]);
+    this._events.next([]);
   }
 }
