@@ -1,13 +1,12 @@
 <div class="page-header">
   <div class="header-content">
-    <h2>Technical Scouting Console</h2>
-    <p class="status-text">[FEED_ACTIVE] {{ videoStatus() }}</p>
+    <h2>AI Event Mapper</h2>
+    <p class="status-text">{{ videoStatus() }}</p>
   </div>
   <div class="header-actions">
-    <div class="model-status" [class.ready]="isModelReady()">
-      <span class="pulse-dot"></span>
-      {{ isModelReady() ? 'AI NEURAL ENGINE: READY' : 'AI ENGINE: OFFLINE' }}
-    </div>
+    <button class="btn-secondary" (click)="loadModel()" [disabled]="isLoadingModel() || isModelReady()">
+      {{ isModelReady() ? 'Model Synchronized' : (isLoadingModel() ? 'Syncing...' : 'Initialize AI Engine') }}
+    </button>
   </div>
 </div>
 
