@@ -1,12 +1,13 @@
 <div class="page-header">
   <div class="header-content">
-    <h2>AI Event Mapper</h2>
-    <p class="status-text">{{ videoStatus() }}</p>
+    <h2>Technical Scouting Console</h2>
+    <p class="status-text">[FEED_ACTIVE] {{ videoStatus() }}</p>
   </div>
   <div class="header-actions">
-    <button class="btn-secondary" (click)="loadModel()" [disabled]="isLoadingModel() || isModelReady()">
-      {{ isModelReady() ? 'AI Model Ready' : (isLoadingModel() ? 'Loading AI...' : 'Load AI Model') }}
-    </button>
+    <div class="model-status" [class.ready]="isModelReady()">
+      <span class="pulse-dot"></span>
+      {{ isModelReady() ? 'AI NEURAL ENGINE: READY' : 'AI ENGINE: OFFLINE' }}
+    </div>
   </div>
 </div>
 
@@ -17,10 +18,16 @@
       <video #videoPlayer (click)="togglePlay()" preload="metadata"></video>
       <canvas #overlayCanvas (click)="onCanvasClick($event)"></canvas>
       
-      <!-- Loading Overlay -->
-      <div class="loading-overlay" *ngIf="isLoadingModel()">
-        <div class="spinner"></div>
-        <span>Warming up AI Model...</span>
+      <!-- Tech Overlay for 'Non-AI' feel -->
+      <div class="tech-overlay">
+        <div class="scanlines"></div>
+        <div class="vignette"></div>
+        <div class="corner-accents">
+          <span class="top-left"></span>
+          <span class="top-right"></span>
+          <span class="bottom-left"></span>
+          <span class="bottom-right"></span>
+        </div>
       </div>
     </div>
 
