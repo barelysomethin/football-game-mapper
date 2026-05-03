@@ -1,0 +1,74 @@
+.page-header {
+  margin-bottom: 30px;
+
+  h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 8px 0 0;
+    color: var(--text-muted);
+  }
+}
+
+.mapper-container {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 20px;
+}
+
+.card {
+  background-color: var(--color-surface-2);
+  border: 1px solid var(--border-line);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.video-section {
+  .video-placeholder {
+    aspect-ratio: 16 / 9;
+    background-color: #000;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+
+  .video-controls {
+    display: flex;
+    gap: 12px;
+  }
+}
+
+.pitch-section {
+  .pitch-map {
+    aspect-ratio: 105 / 68;
+    background-color: #083621;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+  }
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-secondary);
+  border: 1px solid var(--color-secondary);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}

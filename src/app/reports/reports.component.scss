@@ -1,0 +1,58 @@
+.page-header {
+  margin-bottom: 30px;
+
+  h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 8px 0 0;
+    color: var(--text-muted);
+  }
+}
+
+.reports-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+}
+
+.card {
+  background-color: var(--color-surface-2);
+  border: 1px solid var(--border-line);
+  border-radius: 12px;
+  padding: 24px;
+
+  h3 {
+    margin: 0 0 12px;
+    font-size: 18px;
+  }
+
+  p {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+}
+
+.empty-state {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--border-line);
+  border-radius: 8px;
+  color: var(--text-muted);
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
