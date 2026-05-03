@@ -28,6 +28,7 @@ export class MapperComponent extends BaseComponent implements AfterViewInit, OnD
   detections = signal<DetectionResult[]>([]);
   isAutoDetecting = signal(false);
   videoStatus = signal('Waiting for video...');
+  previewPoint = signal<{x: number, y: number} | null>(null);
   
   private detectionInterval: any;
 
@@ -60,7 +61,7 @@ export class MapperComponent extends BaseComponent implements AfterViewInit, OnD
   }
 
   loadDefaultVideo() {
-    this.loadVideo('assets/Game (1).mp4');
+    this.loadVideo('/assets/Game.mp4');
   }
 
   private loadVideo(url: string) {
@@ -140,6 +141,32 @@ export class MapperComponent extends BaseComponent implements AfterViewInit, OnD
   }
 
   onCanvasClick(event: MouseEvent) {
-    // Mapping logic
+    const rect = this.overlayCanvas.nativeElement.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+
+    this.previewPoint.set({ 
+      x: Math.max(0, Math.min(100, x)), 
+      y: Math.max(0, Math.min(100, y)) 
+    });
+  }
+
+  saveEvent() {
+    const point = this.previewPoint();
+    if (!point) return;
+
+    this.matchService.addEvent({
+      id: Math.random().toString(36).substr(2, 9),
+      matchId: 'M-2026-014',
+      playerId: 'MANUAL',
+      playerName: 'Mapped Player',
+      team: 'home',
+      type: 'Action',
+      outcome: 'Successful',
+      minute: Math.floor(this.videoPlayer.nativeElement.currentTime / 60),
+      second: Math.floor(this.videoPlayer.nativeElement.currentTime % 60),
+      pitchX: point.x,
+      pitchY: point.y
+    });
   }
 }

@@ -54,6 +54,7 @@
       <div class="pitch-container">
         <div class="pitch">
           <svg viewBox="0 0 105 68" preserveAspectRatio="none">
+            <!-- Pitch lines -->
             <rect x="1" y="1" width="103" height="66" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="0.7" />
             <line x1="52.5" y1="1" x2="52.5" y2="67" stroke="rgba(255,255,255,0.4)" stroke-width="0.7" />
             <circle cx="52.5" cy="34" r="9.15" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="0.7" />
@@ -67,9 +68,17 @@
             <path d="M 17.5 24.84 A 9.15 9.15 0 0 1 17.5 43.16" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="0.7" />
             <path d="M 87.5 24.84 A 9.15 9.15 0 0 0 87.5 43.16" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="0.7" />
           </svg>
+          
+          <!-- Interactive Preview Marker -->
+          <div class="pitch-marker preview" *ngIf="previewPoint()" 
+               [ngStyle]="{'left.%': previewPoint()?.x, 'top.%': previewPoint()?.y}"></div>
         </div>
       </div>
+      <div class="pitch-actions" *ngIf="previewPoint()">
+        <button class="btn-primary full-width" (click)="saveEvent()">Save Event at this Position</button>
+      </div>
     </div>
+
 
     <!-- Detections Info -->
     <div class="detections-card card">
