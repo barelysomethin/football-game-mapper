@@ -21,7 +21,7 @@ export class MapperComponent implements AfterViewInit, OnDestroy {
 
   // UI Signals
   isLoadingModel = this.aiService.isModelLoading;
-  isModelReady = this.aiService.isModelReady;
+  isModelReady = this.aiService.isModelLoaded;
   detections = signal<DetectionResult[]>([]);
   isAutoDetecting = signal(false);
   videoStatus = signal('Waiting for video...');
